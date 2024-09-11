@@ -725,3 +725,63 @@ export const MultiOptionsmood = {
     element.appendChild(formContainer);
   },
 }
+
+export const HouseStructureExtension = {
+  name: 'HouseStructure',
+  type: 'response',
+  match: ({ trace }) =>
+    trace.type === 'ext_house_structure' || trace.payload.name === 'ext_house_structure',
+  render: ({ trace, element }) => {
+    const houseContainer = document.createElement('div');
+    houseContainer.className = 'house-structure-wrapper';
+
+    houseContainer.innerHTML = `
+      <style>
+        .house-structure-wrapper {
+          font-family: 'Arial', sans-serif;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+          border-radius: 10px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .structure-title {
+          font-size: 24px;
+          font-weight: bold;
+          color: #333;
+          text-align: center;
+          margin-bottom: 15px;
+        }
+        .house-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          grid-gap: 10px;
+        }
+        .room {
+          width: 100%;
+          height: 100px;
+          background-color: #ddd;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 18px;
+          color: #444;
+          border-radius: 5px;
+        }
+      </style>
+
+      <div class="structure-title">House Structure Design</div>
+      <div class="house-grid">
+        <div class="room">Living Room</div>
+        <div class="room">Kitchen</div>
+        <div class="room">Bedroom 1</div>
+        <div class="room">Bedroom 2</div>
+        <div class="room">Bathroom</div>
+        <div class="room">Garage</div>
+      </div>
+    `;
+
+    element.appendChild(houseContainer);
+  },
+};
