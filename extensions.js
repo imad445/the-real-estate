@@ -7,76 +7,80 @@ export const FormExtension = {
     trace.type === 'ext_form' || trace.payload.name === 'ext_form',
   render: ({ trace, element }) => {
     const formContainer = document.createElement('form')
-
+    
     formContainer.innerHTML = `
-          <style>
-            label {
-              font-size: 0.8em;
-              color: #888;
-            }
-            input[type="text"], input[type="email"], input[type="tel"] {
-              width: 100%;
-              border: none;
-              border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
-              background: transparent;
-              margin: 5px 0;
-              outline: none;
-            }
-            .phone {
-              width: 150px;
-            }
-            .invalid {
-              border-color: red;
-            }
-            .submit {
-              background: linear-gradient(to right, #2e6ee1, #2e7ff1 );
-              border: none;
-              color: white;
-              padding: 10px;
-              border-radius: 5px;
-              width: 100%;
-              cursor: pointer;
-            }
-          </style>
-
-          <label for="name">Name</label>
-          <input type="text" class="name" name="name" required><br><br>
-
-          <label for="email">Email</label>
-          <input type="email" class="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Invalid email address"><br><br>
-
-          <label for="phone">Phone Number</label>
-          <input type="tel" class="phone" name="phone" required pattern="\\d+" title="Invalid phone number, please enter only numbers"><br><br>
-
-          <input type="submit" class="submit" value="Submit">
-        `
-
+      <style>
+        form {
+          background-color: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          max-width: 300px;
+          margin: 0 auto;
+        }
+        label {
+          display: block;
+          margin-bottom: 5px;
+          font-size: 14px;
+          color: #333;
+        }
+        input[type="text"], input[type="email"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #378d1a;
+          border-radius: 20px;
+          box-sizing: border-box;
+          font-size: 14px;
+          transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus, input[type="email"]:focus {
+          border-color: #378d1a;
+          outline: none;
+        }
+        .submit {
+          background: linear-gradient(to right, #378d1a, #53d145);
+          color: white;
+          padding: 10px;
+          border: none;
+          border-radius: 20px;
+          width: 100%;
+          cursor: pointer;
+          font-size: 16px;
+          transition: opacity 0.3s;
+        }
+        .submit:hover {
+          opacity: 0.9;
+        }
+      </style>
+      
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+      
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+      
+      <button type="submit" class="submit">Submit</button>
+    `
+    
     formContainer.addEventListener('submit', function (event) {
       event.preventDefault()
-
-      const name = formContainer.querySelector('.name')
-      const email = formContainer.querySelector('.email')
-      const phone = formContainer.querySelector('.phone')
-
-      if (
-        !name.checkValidity() ||
-        !email.checkValidity() ||
-        !phone.checkValidity()
-      ) {
-        name.classList.add('invalid')
-        email.classList.add('invalid')
-        phone.classList.add('invalid')
+      
+      const name = formContainer.querySelector('#name')
+      const email = formContainer.querySelector('#email')
+      
+      if (!name.checkValidity() || !email.checkValidity()) {
         return
       }
-
+      
       formContainer.querySelector('.submit').remove()
-
+      
       window.voiceflow.chat.interact({
         type: 'complete',
-        payload: { name: name.value, email: email.value, phone: phone.value },
+        payload: { name: name.value, email: email.value },
       })
     })
-
+    
     element.appendChild(formContainer)
   },
 }
@@ -159,35 +163,49 @@ export const FileUploadExtension = {
   match: ({ trace }) =>
     trace.type === 'ext_fileUpload' || trace.payload.name === 'ext_fileUpload',
   render: ({ trace, element }) => {
-    const fileUploadContainer = document.createElement('div')
+    const fileUploadContainer = document.createElement('div');
     fileUploadContainer.innerHTML = `
       <style>
         .my-file-upload {
-          border: 2px dashed rgba(46, 110, 225, 0.3);
+          border: 2px dashed rgba(46, 204, 113, 0.6); /* Green border */
           padding: 20px;
           text-align: center;
           cursor: pointer;
+          transition: border-color 0.3s ease;
+          font-family: Arial, sans-serif;
+          color: #2ecc71;
+        }
+        .my-file-upload:hover {
+          border-color: rgba(46, 204, 113, 1); /* Darker green on hover */
+        }
+        .uploading {
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
       </style>
       <div class='my-file-upload'>Drag and drop a file here or click to upload</div>
       <input type='file' style='display: none;'>
-    `
+    `;
 
-    const fileInput = fileUploadContainer.querySelector('input[type=file]')
-    const fileUploadBox = fileUploadContainer.querySelector('.my-file-upload')
+    const fileInput = fileUploadContainer.querySelector('input[type=file]');
+    const fileUploadBox = fileUploadContainer.querySelector('.my-file-upload');
 
     fileUploadBox.addEventListener('click', function () {
-      fileInput.click()
-    })
+      fileInput.click();
+    });
 
     fileInput.addEventListener('change', function () {
-      const file = fileInput.files[0]
-      console.log('File selected:', file)
+      const file = fileInput.files[0];
+      console.log('File selected:', file);
 
-      fileUploadContainer.innerHTML = `<img src="https://s3.amazonaws.com/com.voiceflow.studio/share/upload/upload.gif" alt="Upload" width="50" height="50">`
+      fileUploadContainer.innerHTML = `<div class="uploading">
+        <img src="https://s3.amazonaws.com/com.voiceflow.studio/share/upload/upload.gif" alt="Uploading" width="50" height="50">
+        <span style="margin-left: 10px; color: #2ecc71;">Uploading...</span>
+      </div>`;
 
-      var data = new FormData()
-      data.append('file', file)
+      var data = new FormData();
+      data.append('file', file);
 
       fetch('https://tmpfiles.org/api/v1/upload', {
         method: 'POST',
@@ -195,15 +213,15 @@ export const FileUploadExtension = {
       })
         .then((response) => {
           if (response.ok) {
-            return response.json()
+            return response.json();
           } else {
-            throw new Error('Upload failed: ' + response.statusText)
+            throw new Error('Upload failed: ' + response.statusText);
           }
         })
         .then((result) => {
           fileUploadContainer.innerHTML =
-            '<img src="https://s3.amazonaws.com/com.voiceflow.studio/share/check/check.gif" alt="Done" width="50" height="50">'
-          console.log('File uploaded:', result.data.url)
+            '<img src="https://s3.amazonaws.com/com.voiceflow.studio/share/check/check.gif" alt="Done" width="50" height="50">';
+          console.log('File uploaded:', result.data.url);
           window.voiceflow.chat.interact({
             type: 'complete',
             payload: {
@@ -212,15 +230,15 @@ export const FileUploadExtension = {
                 'https://tmpfiles.org/dl/'
               ),
             },
-          })
+          });
         })
         .catch((error) => {
-          console.error(error)
-          fileUploadContainer.innerHTML = '<div>Error during upload</div>'
-        })
-    })
+          console.error(error);
+          fileUploadContainer.innerHTML = '<div style="color: red;">Error during upload</div>';
+        });
+    });
 
-    element.appendChild(fileUploadContainer)
+    element.appendChild(fileUploadContainer);
   },
 }
 
@@ -524,5 +542,186 @@ export const FeedbackExtension = {
       })
 
     element.appendChild(feedbackContainer)
+  },
+}
+
+export const MultiOptionsExtension = {
+  name: 'MultiOptions',
+  type: 'response',
+  match: ({ trace }) =>
+    trace.type === 'ext_multioptions' || trace.payload.name === 'ext_multioptions',
+  render: ({ trace, element }) => {
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+      <style>
+        .multi-options-container {
+          font-family: 'Arial', sans-serif;
+          max-width: 400px;
+          margin: 10px auto;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          padding: 10px;
+        }
+        .options-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        .option {
+          background-color: #ffffff;
+          border: 1px solid #378d1a;
+          border-radius: 20px;
+          padding: 6px 4px;
+          text-align: center;
+          font-size: 12px;
+          cursor: pointer;
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .option:hover {
+          background-color: #e6ffe6;
+        }
+        .option.selected {
+          background-color: #378d1a;
+          color: white;
+        }
+      </style>
+      <div class="multi-options-container">
+        <div class="options-grid">
+          <div class="option" data-value="Brain Fog">Brain Fog</div>
+          <div class="option" data-value="Bloating">Bloating</div>
+          <div class="option" data-value="Mood">Mood</div>
+          <div class="option" data-value="Immunity">Immunity</div>
+          <div class="option" data-value="Sleep">Sleep</div>
+          <div class="option" data-value="Skin">Skin</div>
+          <div class="option" data-value="Hair">Hair</div>
+          <div class="option" data-value="Metabolism">Metabolism</div>
+          <div class="option" data-value="Energy">Energy</div>
+          <div class="option" data-value="Libido">Libido</div>
+          <div class="option" data-value="Hydration">Hydration</div>
+          <div class="option" data-value="Mineralization">Mineralization</div>
+        </div>
+      </div>
+    `;
+    
+    formContainer.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => {
+        option.classList.add('selected');
+        setTimeout(() => {
+          window.voiceflow.chat.interact({
+            type: 'complete',
+            payload: { selectedOption: option.getAttribute('data-value') },
+          });
+          element.innerHTML = '';
+        }, 300);
+      });
+    });
+    
+    element.appendChild(formContainer);
+  },
+}
+
+export const MultiOptionsmood = {
+  name: 'MultiOptionsmood',
+  type: 'response',
+  match: ({ trace }) =>
+    trace.type === 'ext_multioptionsmood' || trace.payload.name === 'ext_multioptionsmood',
+  render: ({ trace, element }) => {
+    const formContainer = document.createElement('div');
+    formContainer.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        
+        .multi-options-container {
+          font-family: 'Roboto', sans-serif;
+          max-width: 400px;
+          margin: 10px auto;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          padding: 10px;
+        }
+        .options-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .option {
+          background-color: #ffffff;
+          border: 1px solid #378d1a;
+          border-radius: 20px;
+          padding: 12px;
+          text-align: center;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background-color 0.3s, color 0.3s;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .option:hover {
+          background-color: #e6ffe6;
+        }
+        .option.selected {
+          background-color: #378d1a;
+          color: white;
+        }
+        .submit-btn {
+          display: block;
+          width: 100%;
+          padding: 12px;
+          background-color: #378d1a;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          text-align: center;
+          margin-top: 15px;
+        }
+        .submit-btn:disabled {
+          background-color: #cccccc;
+        }
+      </style>
+      <div class="multi-options-container">
+        <div class="options-grid">
+          <div class="option" data-value="Stress-related">Stress-related</div>
+          <div class="option" data-value="Less reactive">Less reactive</div>
+          <div class="option" data-value="Pick me up">Pick me up</div>
+          <div class="option" data-value="Reduce PMS">Reduce PMS</div>
+        </div>
+        <button class="submit-btn" disabled>Submit</button>
+      </div>
+    `;
+    
+    const selectedOptions = new Set();
+    const submitBtn = formContainer.querySelector('.submit-btn');
+    
+    formContainer.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => {
+        const value = option.getAttribute('data-value');
+        
+        if (selectedOptions.has(value)) {
+          selectedOptions.delete(value);
+          option.classList.remove('selected');
+        } else if (selectedOptions.size < 2) {
+          selectedOptions.add(value);
+          option.classList.add('selected');
+        }
+        
+        submitBtn.disabled = selectedOptions.size === 0;
+      });
+    });
+    
+    submitBtn.addEventListener('click', () => {
+      window.voiceflow.chat.interact({
+        type: 'complete',
+        payload: { selectedOptions: Array.from(selectedOptions) },
+      });
+      element.innerHTML = '';
+    });
+    
+    element.appendChild(formContainer);
   },
 }
