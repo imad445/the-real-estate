@@ -784,4 +784,4 @@ export const HouseStructureExtension = {
 
     element.appendChild(houseContainer);
   },
-};
+}
