@@ -455,93 +455,134 @@ export const FeedbackExtension = {
   match: ({ trace }) =>
     trace.type === 'ext_feedback' || trace.payload.name === 'ext_feedback',
   render: ({ trace, element }) => {
-    const feedbackContainer = document.createElement('div')
+    const feedbackContainer = document.createElement('div');
 
     feedbackContainer.innerHTML = `
-          <style>
-            .vfrc-feedback {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
+      <style>
+        .feedback-container {
+          background-color: #ffffff;
+          padding: 16px;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          box-sizing: border-box;
+          font-family: sans-serif;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .feedback-title {
+          font-size: 16px; /* Increased font size */
+          font-weight: bold; /* Match submit button font weight */
+          margin-bottom: 12px;
+          color: #333;
+          text-align: center; /* Center align text */
+        }
+        .star-rating {
+          font-size: 24px; /* Increased star size */
+          color: #e0e0e0;
+          margin-bottom: 12px;
+          justify-content: center; /* Center align stars */
+          display: flex;
+        }
+        .star-rating .star {
+          display: inline-block;
+          margin: 0 8px; /* Add spacing between stars */
+        }
+        .star-rating .star.active {
+          color: #ffd700;
+        }
+        textarea {
+          width: 100%;
+          padding: 8px;
+          margin: 8px 0;
+          border: 1px solid #e0e0e0;
+          border-radius: 4px;
+          font-size: 14px;
+          box-sizing: border-box;
+          resize: none; /* Remove scrollbar */
+          height: 60px; /* Set fixed height */
+          font-family: inherit; /* Inherit font from container */
+        }
+        .submit-btn {
+          background-color: #6B4EFF;
+          color: white;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: bold; /* Match title font weight */
+          width: 100%;
+          margin-top: 8px;
+        }
+      </style>
+      <div class="feedback-container">
+        <div class="feedback-title">Please give your feedback on our customer service:</div>
+        <div class="star-rating" id="starRating">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+        <textarea id="feedbackText" placeholder="Share your experience with us..."></textarea>
+        <button class="submit-btn" id="submitFeedback">Submit Feedback</button>
+      </div>
+    `;
 
-            .vfrc-feedback--description {
-                font-size: 0.8em;
-                color: grey;
-                pointer-events: none;
-            }
+    let selectedRating = 0;
 
-            .vfrc-feedback--buttons {
-                display: flex;
-            }
+    const starRating = feedbackContainer.querySelector('#starRating');
+    const stars = starRating.querySelectorAll('.star');
+    const feedbackText = feedbackContainer.querySelector('#feedbackText');
+    const submitButton = feedbackContainer.querySelector('#submitFeedback');
 
-            .vfrc-feedback--button {
-                margin: 0;
-                padding: 0;
-                margin-left: 0px;
-                border: none;
-                background: none;
-                opacity: 0.2;
-            }
+    function updateStars(rating) {
+      stars.forEach((star, index) => {
+        star.classList.toggle('active', index < rating);
+      });
+    }
 
-            .vfrc-feedback--button:hover {
-              opacity: 0.5; /* opacity on hover */
-            }
+    starRating.addEventListener('click', (event) => {
+      if (event.target.classList.contains('star')) {
+        selectedRating = parseInt(event.target.dataset.value);
+        updateStars(selectedRating);
+      }
+    });
 
-            .vfrc-feedback--button.selected {
-              opacity: 0.6;
-            }
+    starRating.addEventListener('mouseover', (event) => {
+      if (event.target.classList.contains('star')) {
+        updateStars(parseInt(event.target.dataset.value));
+      }
+    });
 
-            .vfrc-feedback--button.disabled {
-                pointer-events: none;
-            }
+    starRating.addEventListener('mouseout', () => {
+      updateStars(selectedRating);
+    });
 
-            .vfrc-feedback--button:first-child svg {
-                fill: none; /* color for thumb up */
-                stroke: none;
-                border: none;
-                margin-left: 6px;
-            }
+    submitButton.addEventListener('click', () => {
+      if (selectedRating === 0) {
+        alert('Please select a rating before submitting.');
+        return;
+      }
 
-            .vfrc-feedback--button:last-child svg {
-                margin-left: 4px;
-                fill: none; /* color for thumb down */
-                stroke: none;
-                border: none;
-                transform: rotate(180deg);
-            }
-          </style>
-          <div class="vfrc-feedback">
-            <div class="vfrc-feedback--description">Was this helpful?</div>
-            <div class="vfrc-feedback--buttons">
-              <button class="vfrc-feedback--button" data-feedback="1">${SVG_Thumb}</button>
-              <button class="vfrc-feedback--button" data-feedback="0">${SVG_Thumb}</button>
-            </div>
-          </div>
-        `
+      const feedback = {
+        rating: selectedRating,
+        comment: feedbackText.value.trim(),
+      };
 
-    feedbackContainer
-      .querySelectorAll('.vfrc-feedback--button')
-      .forEach((button) => {
-        button.addEventListener('click', function (event) {
-          const feedback = this.getAttribute('data-feedback')
-          window.voiceflow.chat.interact({
-            type: 'complete',
-            payload: { feedback: feedback },
-          })
+      console.log('Feedback submitted:', feedback);
 
-          feedbackContainer
-            .querySelectorAll('.vfrc-feedback--button')
-            .forEach((btn) => {
-              btn.classList.add('disabled')
-              if (btn === this) {
-                btn.classList.add('selected')
-              }
-            })
-        })
-      })
+      window.voiceflow.chat.interact({
+        type: 'complete',
+        payload: feedback,
+      });
 
-    element.appendChild(feedbackContainer)
+      feedbackContainer.innerHTML = '<p>Thank you for your feedback!</p>';
+    });
+
+    element.appendChild(feedbackContainer);
   },
 }
 
@@ -623,109 +664,6 @@ export const MultiOptionsExtension = {
   },
 }
 
-export const MultiOptionsmood = {
-  name: 'MultiOptionsmood',
-  type: 'response',
-  match: ({ trace }) =>
-    trace.type === 'ext_multioptionsmood' || trace.payload.name === 'ext_multioptionsmood',
-  render: ({ trace, element }) => {
-    const formContainer = document.createElement('div');
-    formContainer.innerHTML = `
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
-        
-        .multi-options-container {
-          font-family: 'Roboto', sans-serif;
-          max-width: 400px;
-          margin: 10px auto;
-          background-color: #f9f9f9;
-          border-radius: 8px;
-          padding: 10px;
-        }
-        .options-grid {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .option {
-          background-color: #ffffff;
-          border: 1px solid #378d1a;
-          border-radius: 20px;
-          padding: 12px;
-          text-align: center;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background-color 0.3s, color 0.3s;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .option:hover {
-          background-color: #e6ffe6;
-        }
-        .option.selected {
-          background-color: #378d1a;
-          color: white;
-        }
-        .submit-btn {
-          display: block;
-          width: 100%;
-          padding: 12px;
-          background-color: #378d1a;
-          color: white;
-          border: none;
-          border-radius: 5px;
-          font-size: 16px;
-          cursor: pointer;
-          text-align: center;
-          margin-top: 15px;
-        }
-        .submit-btn:disabled {
-          background-color: #cccccc;
-        }
-      </style>
-      <div class="multi-options-container">
-        <div class="options-grid">
-          <div class="option" data-value="Stress-related">Stress-related</div>
-          <div class="option" data-value="Less reactive">Less reactive</div>
-          <div class="option" data-value="Pick me up">Pick me up</div>
-          <div class="option" data-value="Reduce PMS">Reduce PMS</div>
-        </div>
-        <button class="submit-btn" disabled>Submit</button>
-      </div>
-    `;
-    
-    const selectedOptions = new Set();
-    const submitBtn = formContainer.querySelector('.submit-btn');
-    
-    formContainer.querySelectorAll('.option').forEach(option => {
-      option.addEventListener('click', () => {
-        const value = option.getAttribute('data-value');
-        
-        if (selectedOptions.has(value)) {
-          selectedOptions.delete(value);
-          option.classList.remove('selected');
-        } else if (selectedOptions.size < 2) {
-          selectedOptions.add(value);
-          option.classList.add('selected');
-        }
-        
-        submitBtn.disabled = selectedOptions.size === 0;
-      });
-    });
-    
-    submitBtn.addEventListener('click', () => {
-      window.voiceflow.chat.interact({
-        type: 'complete',
-        payload: { selectedOptions: Array.from(selectedOptions) },
-      });
-      element.innerHTML = '';
-    });
-    
-    element.appendChild(formContainer);
-  },
-}
-
 export const LocationExtension = {
   name: 'LocationCapture',
   type: 'response',
@@ -737,7 +675,7 @@ export const LocationExtension = {
     locationContainer.innerHTML = `
       <style>
         .location-wrapper {
-          background-color: #c7f0f2; /* Changed background color */
+          background-color: white;
           padding: 20px;
           border-radius: 8px;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -746,10 +684,10 @@ export const LocationExtension = {
           text-align: center;
         }
         .get-location-btn {
-          background: #c7f0f2; /* Changed button background color */
-          color: white; /* Kept white text for contrast */
+          background: linear-gradient(to right, #378d1a, #53d145);
+          color: white;
           padding: 10px;
-          border: 2px solid #c7f0f2; /* Border color matching */
+          border: none;
           border-radius: 20px;
           width: 100%;
           cursor: pointer;
@@ -762,12 +700,12 @@ export const LocationExtension = {
         .loading {
           margin-top: 10px;
           font-size: 14px;
-          color: #c7f0f2; /* Changed loading message color */
+          color: #333;
         }
       </style>
 
       <div class="location-wrapper">
-        <p style="color: #c7f0f2;">Click the button to share your location:</p> <!-- Text color changed -->
+        <p>Click the button to share your location:</p>
         <button class="get-location-btn">Share Location</button>
         <div class="loading" style="display: none;">Retrieving location...</div>
       </div>
@@ -828,5 +766,150 @@ export const LocationExtension = {
     });
 
     element.appendChild(locationContainer);
+  },
+}
+
+export const RoomSelectorExtension = {
+  name: 'RoomSelector',
+  type: 'response',
+  match: ({ trace }) => trace.type === 'ext_room_selector' || trace.payload?.name === 'ext_room_selector',
+  render: ({ element }) => {
+    const container = document.createElement('div');
+    
+    container.innerHTML = `
+      <style>
+        .room-selector-container {
+          background-color: #f5f5f5;
+          padding: 20px;
+          border-radius: 12px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          max-width: 300px;
+          margin: 0 auto;
+          font-family: 'Arial', sans-serif;
+        }
+        .room-selector-label {
+          display: block;
+          margin-bottom: 15px;
+          font-size: 18px;
+          color: #333;
+          font-weight: bold;
+        }
+        .room-selector-range {
+          width: 100%;
+          -webkit-appearance: none;
+          background: transparent;
+          margin-bottom: 20px;
+        }
+        .room-selector-range::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 6px;
+          background: #e0e0e0;
+          border-radius: 3px;
+        }
+        .room-selector-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: #4CAF50;
+          cursor: pointer;
+          margin-top: -7px;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .room-selector-value {
+          text-align: center;
+          font-size: 28px;
+          color: #4CAF50;
+          margin: 15px 0;
+          font-weight: bold;
+        }
+        .room-selector-submit {
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 6px;
+          font-size: 18px;
+          cursor: pointer;
+          display: block;
+          margin: 20px auto 0;
+          transition: background-color 0.3s, transform 0.1s;
+        }
+        .room-selector-submit:hover {
+          background-color: #45a049;
+        }
+        .room-selector-submit:active {
+          transform: scale(0.98);
+        }
+        .rooms-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+          margin-top: 20px;
+        }
+        .room {
+          width: 40px;
+          height: 40px;
+          background-color: #4CAF50;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.8); }
+          to { opacity: 1; transform: scale(1); }
+        }
+      </style>
+      <div class="room-selector-container">
+        <label class="room-selector-label" for="roomRange">Select number of rooms:</label>
+        <input type="range" id="roomRange" class="room-selector-range" min="1" max="10" value="3">
+        <div class="room-selector-value" id="roomValue">3 ROOMS</div>
+        <div class="rooms-container" id="roomsContainer"></div>
+        <button class="room-selector-submit" id="submitRooms">Confirm</button>
+      </div>
+    `;
+    
+    const rangeInput = container.querySelector('#roomRange');
+    const valueDisplay = container.querySelector('#roomValue');
+    const submitButton = container.querySelector('#submitRooms');
+    const roomsContainer = container.querySelector('#roomsContainer');
+    
+    function updateRooms(rooms) {
+      roomsContainer.innerHTML = '';
+      for (let i = 0; i < rooms; i++) {
+        const room = document.createElement('div');
+        room.className = 'room';
+        room.style.animation = `fadeIn 0.3s ease forwards ${i * 0.05}s`;
+        roomsContainer.appendChild(room);
+      }
+    }
+    
+    function handleRangeInput() {
+      const rooms = parseInt(this.value, 10);
+      valueDisplay.textContent = `${rooms} ROOM${rooms !== 1 ? 'S' : ''}`;
+      updateRooms(rooms);
+    }
+    
+    function handleSubmit() {
+      const selectedRooms = parseInt(rangeInput.value, 10);
+      if (typeof window.voiceflow !== 'undefined' && 
+          typeof window.voiceflow.chat !== 'undefined' && 
+          typeof window.voiceflow.chat.interact === 'function') {
+        window.voiceflow.chat.interact({
+          type: 'complete',
+          payload: { selectedRooms: selectedRooms },
+        });
+      } else {
+        console.error('Voiceflow chat interaction not available');
+      }
+    }
+    
+    rangeInput.addEventListener('input', handleRangeInput);
+    submitButton.addEventListener('click', handleSubmit);
+    
+    element.appendChild(container);
+    
+    // Initial rooms update
+    updateRooms(3);
   },
 }
