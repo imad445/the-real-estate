@@ -684,7 +684,7 @@ export const LocationExtension = {
           text-align: center;
         }
         .get-location-btn {
-          background: linear-gradient(to right, #378d1a, #53d145);
+          background: #190AD5;
           color: white;
           padding: 10px;
           border: none;
@@ -700,7 +700,7 @@ export const LocationExtension = {
         .loading {
           margin-top: 10px;
           font-size: 14px;
-          color: #333;
+          color: #190AD5;
         }
       </style>
 
@@ -742,26 +742,26 @@ export const LocationExtension = {
               return response.json();
             })
             .then(data => {
-              console.log('Success:', data); // Handle success response if needed
+              console.log('Success:', data);
+              // Remove the entire extension after successful location capture
+              element.removeChild(locationContainer);
             })
             .catch((error) => {
               console.error('Error:', error);
+              loadingMessage.style.display = 'none';
+              button.style.display = 'block';
             });
-
-            // Optional: Notify user or handle UI after capturing location
-            loadingMessage.style.display = 'none'; // Hide loading message
-            button.style.display = 'block'; // Show button again
           },
           function (error) {
             alert('Unable to retrieve location. Please check your browser settings.');
-            loadingMessage.style.display = 'none'; // Hide loading message
-            button.style.display = 'block'; // Show button again
+            loadingMessage.style.display = 'none';
+            button.style.display = 'block';
           }
         );
       } else {
         alert('Geolocation is not supported by this browser.');
-        loadingMessage.style.display = 'none'; // Hide loading message
-        button.style.display = 'block'; // Show button again
+        loadingMessage.style.display = 'none';
+        button.style.display = 'block';
       }
     });
 
