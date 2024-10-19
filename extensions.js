@@ -726,62 +726,107 @@ export const MultiOptionsmood = {
   },
 }
 
-export const HouseStructureExtension = {
-  name: 'HouseStructure',
+export const LocationExtension = {
+  name: 'LocationCapture',
   type: 'response',
   match: ({ trace }) =>
-    trace.type === 'ext_house_structure' || trace.payload.name === 'ext_house_structure',
+    trace.type === 'ext_location' || trace.payload.name === 'ext_location',
   render: ({ trace, element }) => {
-    const houseContainer = document.createElement('div');
-    houseContainer.className = 'house-structure-wrapper';
+    const locationContainer = document.createElement('div');
 
-    houseContainer.innerHTML = `
+    locationContainer.innerHTML = `
       <style>
-        .house-structure-wrapper {
-          font-family: 'Arial', sans-serif;
-          max-width: 600px;
-          margin: 0 auto;
+        .location-wrapper {
+          background-color: #c7f0f2; /* Changed background color */
           padding: 20px;
-          background-color: #f4f4f4;
-          border-radius: 10px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .structure-title {
-          font-size: 24px;
-          font-weight: bold;
-          color: #333;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          max-width: 300px;
+          margin: 0 auto;
           text-align: center;
-          margin-bottom: 15px;
         }
-        .house-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-gap: 10px;
-        }
-        .room {
+        .get-location-btn {
+          background: #c7f0f2; /* Changed button background color */
+          color: white; /* Kept white text for contrast */
+          padding: 10px;
+          border: 2px solid #c7f0f2; /* Border color matching */
+          border-radius: 20px;
           width: 100%;
-          height: 100px;
-          background-color: #ddd;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 18px;
-          color: #444;
-          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: opacity 0.3s;
+        }
+        .get-location-btn:hover {
+          opacity: 0.9;
+        }
+        .loading {
+          margin-top: 10px;
+          font-size: 14px;
+          color: #c7f0f2; /* Changed loading message color */
         }
       </style>
 
-      <div class="structure-title">House Structure Design</div>
-      <div class="house-grid">
-        <div class="room">Living Room</div>
-        <div class="room">Kitchen</div>
-        <div class="room">Bedroom 1</div>
-        <div class="room">Bedroom 2</div>
-        <div class="room">Bathroom</div>
-        <div class="room">Garage</div>
+      <div class="location-wrapper">
+        <p style="color: #c7f0f2;">Click the button to share your location:</p> <!-- Text color changed -->
+        <button class="get-location-btn">Share Location</button>
+        <div class="loading" style="display: none;">Retrieving location...</div>
       </div>
     `;
 
-    element.appendChild(houseContainer);
+    const button = locationContainer.querySelector('.get-location-btn');
+    const loadingMessage = locationContainer.querySelector('.loading');
+
+    button.addEventListener('click', function () {
+      loadingMessage.style.display = 'block';
+      button.style.display = 'none';
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Send the location data to the webhook
+            fetch('https://hook.eu2.make.com/3jemfsmhmbpznm3ma8sf1ssr5ym0ynfe', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                lat: latitude,
+                lon: longitude,
+              }),
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Success:', data); // Handle success response if needed
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+            });
+
+            // Optional: Notify user or handle UI after capturing location
+            loadingMessage.style.display = 'none'; // Hide loading message
+            button.style.display = 'block'; // Show button again
+          },
+          function (error) {
+            alert('Unable to retrieve location. Please check your browser settings.');
+            loadingMessage.style.display = 'none'; // Hide loading message
+            button.style.display = 'block'; // Show button again
+          }
+        );
+      } else {
+        alert('Geolocation is not supported by this browser.');
+        loadingMessage.style.display = 'none'; // Hide loading message
+        button.style.display = 'block'; // Show button again
+      }
+    });
+
+    element.appendChild(locationContainer);
   },
 }
