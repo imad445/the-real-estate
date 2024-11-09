@@ -1,104 +1,59 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Chat Widget | Extensions Demo</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Page</title>
     <style>
-      body {
-        background-color: #f9f9f9;
-      }
-      #flat-chat {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-      #confetti-canvas {
-        position: fixed;
-        z-index: 999;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-      }
-
-      /* Custom styles for chat agent icon */
-      .voiceflow-chat-agent-icon, /* Ensure you inspect the actual class used */
-      .chat-agent-icon {
-        background-color: transparent !important; /* Force remove the background */
-        border: none !important; /* Remove the circular border */
-        width: 80px !important; /* Adjust size if necessary */
-        height: 80px !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      .voiceflow-chat-agent-icon img,
-      .chat-agent-icon img {
-        border-radius: 0 !important; /* Remove any radius that may be applied */
-        width: 100% !important; /* Ensure image takes full width */
-        height: auto !important;
-      }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            font-size: 18px;
+        }
     </style>
-  </head>
-  <body>
-    <canvas id="confetti-canvas"></canvas>
-    <div id="flat-chat"></div>
-    <div id="voiceflow-chat-frame"></div>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script type="module">
-      import { VideoExtension,
-                TimerExtension,
-                FormExtension,
-                MapExtension,
-                LocationExtension,
-                FileUploadExtension,
-                KBUploadExtension,
-                RoomSelectorExtension,
-                MultiOptionsExtension,
-                DateExtension,
-                ConfettiExtension,
-                FeedbackExtension } from './extensions.js';
+</head>
+<body>
+    <button onclick="showMessage()">Reserve</button>
+    <div id="confirmationMessage" class="message">Your reservation is done!</div>
 
-      (function (d, t) {
-        var v = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-        v.onload = function () {
-          window.voiceflow.chat.load({
-            verify: { projectID: '66f95b087840469b3e02c195' },
-            url: 'https://general-runtime.voiceflow.com',
-            versionID: 'production',
-            user: {
-              name: 'Demo User',
-            },
-            render: {
-              mode: 'overlay',
-            },
-            autostart: false,
-            allowDangerousHTML: true,
-            assistant: {
-              extensions: [
-                VideoExtension,
-                TimerExtension,
-                FormExtension,
-                LocationExtension,
-                RoomSelectorExtension,
-                MultiOptionsExtension,
-                MapExtension,
-                FileUploadExtension,
-                KBUploadExtension,
-                DateExtension,
-                ConfettiExtension,
-                FeedbackExtension,
-              ],
-            },
-          });
-        };
-        v.src = 'https://cdn.voiceflow.com/widget/bundle.mjs';
-        v.type = 'text/javascript';
-        s.parentNode.insertBefore(v, s);
-      })(document, 'script');
+    <script>
+        function showMessage() {
+            const message = document.getElementById('confirmationMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
     </script>
-  </body>
+</body>
 </html>
