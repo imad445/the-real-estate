@@ -55,27 +55,29 @@
                     url: 'https://general-runtime.voiceflow.com',
                     versionID: 'production'
                 }).then(() => {
-                    document.getElementById('reserveButton').addEventListener('click', () => {
-                        window.voiceflow.chat.open();
-                        window.voiceflow.chat.interact({
-                            type: 'event',
-                            payload: {
-                                event: { name: 'reserve' }
-                            }
-                        });
-
-                        const message = document.getElementById('confirmationMessage');
-                        message.style.display = 'block';
-                        setTimeout(() => {
-                            message.style.display = 'none';
-                        }, 3000);
-                    });
+                    document.getElementById('reserveButton').addEventListener('click', triggerEvent);
                 });
             };
             v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
             v.type = "text/javascript"; 
             s.parentNode.insertBefore(v, s);
         })(document, 'script');
+
+        function triggerEvent() {
+            window.voiceflow.chat.open();
+            window.voiceflow.chat.interact({
+                type: 'event',
+                payload: {
+                    event: { name: 'reserve' }
+                }
+            });
+
+            const message = document.getElementById('confirmationMessage');
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
     </script>
 </body>
 </html>
