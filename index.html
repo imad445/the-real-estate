@@ -54,8 +54,6 @@
                     verify: { projectID: '67290eeaa544f852cc331506' },
                     url: 'https://general-runtime.voiceflow.com',
                     versionID: 'production'
-                }).then(() => {
-                    document.getElementById('reserveButton').addEventListener('click', triggerEvent);
                 });
             };
             v.src = "https://cdn.voiceflow.com/widget/bundle.mjs";
@@ -64,11 +62,12 @@
         })(document, 'script');
 
         function triggerEvent() {
+            const uniqueId = new Date().getTime(); // Generate a unique timestamp
             window.voiceflow.chat.open();
             window.voiceflow.chat.interact({
                 type: 'event',
                 payload: {
-                    event: { name: 'reserve' }
+                    event: { name: 'reserve_' + uniqueId } // Appending unique ID to make each event distinct
                 }
             });
 
@@ -78,6 +77,8 @@
                 message.style.display = 'none';
             }, 3000);
         }
+
+        document.getElementById('reserveButton').addEventListener('click', triggerEvent);
     </script>
 </body>
 </html>
