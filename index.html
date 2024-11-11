@@ -5,22 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gen Agency - AI Revolution</title>
     <style>
-        /* Base styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --accent-color: #10b981;
+            --background-color: #000;
+            --text-color: #fff;
+            --text-secondary: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #000;
-            color: #fff;
         }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        /* Navigation styles */
+
         nav {
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: fixed;
@@ -28,19 +44,31 @@
             left: 0;
             right: 0;
             z-index: 1000;
+            transition: background-color 0.3s ease;
         }
+
+        nav:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
         nav .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
         }
+
         nav a {
-            color: #fff;
+            color: var(--text-color);
             text-decoration: none;
             margin-right: 1rem;
+            transition: color 0.3s ease;
         }
-        /* Hero section styles */
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
         .hero {
             height: 100vh;
             display: flex;
@@ -48,176 +76,398 @@
             justify-content: center;
             text-align: center;
             background: linear-gradient(45deg, #000, #1a1a1a);
+            position: relative;
+            overflow: hidden;
         }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
         .hero h1 {
             font-size: 4rem;
             margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
         }
+
         .hero p {
             font-size: 1.5rem;
-            color: #a0a0a0;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            border-radius: 0.25rem;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: all 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .btn-primary {
-            background-color: #fff;
-            color: #000;
+            background-color: var(--primary-color);
+            color: var(--text-color);
         }
+
         .btn-primary:hover {
-            background-color: #e0e0e0;
+            background-color: #2563eb;
         }
+
         .btn-outline {
-            border: 2px solid #fff;
-            color: #fff;
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
         }
+
         .btn-outline:hover {
-            background-color: #fff;
-            color: #000;
+            background-color: var(--primary-color);
         }
-        /* Feature section styles */
+
         .feature {
             min-height: 100vh;
             display: flex;
             align-items: center;
             padding: 4rem 0;
+            position: relative;
         }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
+            z-index: 1;
+        }
+
         .feature-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            position: relative;
+            z-index: 2;
         }
+
         .feature h2 {
             font-size: 3rem;
             margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .feature p {
             font-size: 1.25rem;
-            color: #a0a0a0;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
         }
+
         .feature-image {
             aspect-ratio: 1;
-            border-radius: 1.5rem;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
         }
-        /* Specs section styles */
+
+        .feature-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.8;
+        }
+
+        .feature-image::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.2;
+        }
+
         .specs {
-            background-color: #1a1a1a;
+            background-color: #0a0a0a;
             padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
         }
+
+        .specs::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 80%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .specs h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
         }
+
         .specs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+            position: relative;
+            z-index: 2;
         }
+
+        .specs-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .specs-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         .specs-item h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: var(--primary-color);
         }
+
         .specs-item ul {
             list-style-type: none;
-            padding: 0;
         }
+
         .specs-item li {
             display: flex;
             align-items: flex-start;
             margin-bottom: 1rem;
-            color: #a0a0a0;
+            color: var(--text-secondary);
         }
+
         .specs-item li::before {
             content: '✓';
-            color: #3b82f6;
+            color: var(--accent-color);
             margin-right: 0.5rem;
         }
-        /* Pricing section styles */
+
         .pricing {
             padding: 4rem 0;
+            background: linear-gradient(135deg, #000, #0a0a0a);
         }
+
         .pricing h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
         }
+
         .pricing-item {
-            background-color: #1a1a1a;
-            border-radius: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
             padding: 2rem;
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .pricing-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
         .pricing-item.featured {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             transform: scale(1.05);
         }
+
         .pricing-item h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
         }
+
         .pricing-item .price {
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 2rem;
         }
+
         .pricing-item ul {
             list-style-type: none;
             padding: 0;
             margin-bottom: 2rem;
         }
+
         .pricing-item li {
             margin-bottom: 0.5rem;
         }
-        /* Integration section styles */
+
         .integration {
-            background-color: #1a1a1a;
+            background-color: #0a0a0a;
             padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
         }
+
+        .integration::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 80%);
+            animation: rotate 30s linear infinite reverse;
+        }
+
         .integration h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
         }
+
         .integration p {
             text-align: center;
             font-size: 1.25rem;
-            color: #a0a0a0;
+            color: var(--text-secondary);
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
         }
+
         .integration-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
+            position: relative;
+            z-index: 2;
         }
+
         .integration-item {
             aspect-ratio: 1;
-            background-color: #2a2a2a;
-            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .integration-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
         .integration-item-inner {
             width: 4rem;
             height: 4rem;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 0.75rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
         }
-        /* CTA section styles */
+
+        .integration-item-inner::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5;
+        }
+
         .cta {
             min-height: 70vh;
             background: linear-gradient(to bottom, #000, #1e3a8a);
@@ -225,52 +475,101 @@
             align-items: center;
             text-align: center;
             padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
         }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 25%);
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
         .cta h2 {
             font-size: 3rem;
             margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
         }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary-color), 0 0 20px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
+            }
+        }
+
         .cta p {
             font-size: 1.25rem;
-            color: #a0a0a0;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
         }
-        /* Footer styles */
+
         footer {
-            background-color: #1a1a1a;
+            background-color: #0a0a0a;
             border-top: 1px solid #333;
             padding: 3rem 0;
         }
+
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
         }
+
         .footer-column h4 {
             font-size: 1.25rem;
             margin-bottom: 1rem;
+            color: var(--primary-color);
         }
+
         .footer-column ul {
             list-style-type: none;
             padding: 0;
         }
+
         .footer-column li {
             margin-bottom: 0.5rem;
         }
+
         .footer-column a {
-            color: #a0a0a0;
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: color 0.3s ease;
         }
+
         .footer-column a:hover {
-            color: #fff;
+            color: var(--text-color);
         }
-        /* Responsive styles */
+
         @media (max-width: 768px) {
             .feature-content, .specs-grid, .pricing-grid, .integration-grid, .footer-grid {
                 grid-template-columns: 1fr;
             }
             .integration-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .hero p {
+                font-size: 1.25rem;
+            }
+            .feature h2, .cta h2 {
+                font-size: 2.5rem;
             }
         }
     </style>
@@ -291,7 +590,7 @@
     </nav>
 
     <section class="hero">
-        <div class="container">
+        <div class="container hero-content">
             <h1>AI Revolution</h1>
             <p>Transform your business with AI</p>
             <a href="#" class="btn btn-primary">Learn more</a>
@@ -307,15 +606,15 @@
                     <p>Experience conversation like never before with our advanced Chat AI technology. Natural, contextual, and always learning.</p>
                     <a href="#" class="btn btn-outline">Learn more</a>
                 </div>
-                <div class="feature-image" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);"></div>
+                <div class="feature-image"></div>
             </div>
         </div>
     </section>
 
-    <section id="voice" class="feature" style="background-color: #000;">
+    <section id="voice" class="feature">
         <div class="container">
             <div class="feature-content">
-                <div class="feature-image" style="background: linear-gradient(135deg, #10b981, #3b82f6);"></div>
+                <div class="feature-image"></div>
                 <div>
                     <h2>Voice AI</h2>
                     <p>Crystal clear voice interactions powered by cutting-edge neural networks. Your voice is the only interface you need.</p>
@@ -413,7 +712,764 @@
     </section>
 
     <section class="cta">
+        <div class="container cta-content">
+            <h2>Ready to Transform Your Business?</h2>
+            <p>Join thousands of companies already using our AI solutions to drive growth and innovation.</p>
+            <a href="#" class="btn btn-primary">Get Started</a>
+            <a href="#" class="btn btn-outline">Contact Sales</a>
+        </div>
+    </section>
+
+    <footer>
         <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Gen Agency</h4>
+                    <p style="color: #a0a0a0;">Transforming businesses through AI innovation</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Chat AI</a></li>
+                        <li><a href="#">Voice AI</a></li>
+                        <li><a href="#">Custom Solutions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gen Agency - AI Revolution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #8b5cf6;
+            --accent-color: #10b981;
+            --background-color: #000;
+            --text-color: #fff;
+            --text-secondary: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+
+        nav:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(45deg, #000, #1a1a1a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: all 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+        }
+
+        .feature {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
+            z-index: 1;
+        }
+
+        .feature-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .feature-image {
+            aspect-ratio: 1;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .feature-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.8;
+        }
+
+        .feature-image::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.2;
+        }
+
+        .specs {
+            background-color: #0a0a0a;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .specs::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 80%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .specs h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .specs-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .specs-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .specs-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .specs-item ul {
+            list-style-type: none;
+        }
+
+        .specs-item li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .specs-item li::before {
+            content: '✓';
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
+        .pricing {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #000, #0a0a0a);
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .pricing-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .pricing-item.featured {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transform: scale(1.05);
+        }
+
+        .pricing-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-item .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-item ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-item li {
+            margin-bottom: 0.5rem;
+        }
+
+        .integration {
+            background-color: #0a0a0a;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .integration::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 80%);
+            animation: rotate 30s linear infinite reverse;
+        }
+
+        .integration h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .integration p {
+            text-align: center;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .integration-item {
+            aspect-ratio: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .integration-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .integration-item-inner {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .integration-item-inner::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.5;
+        }
+
+        .cta {
+            min-height: 70vh;
+            background: linear-gradient(to bottom, #000, #1e3a8a);
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 25%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 25%);
+            z-index: 1;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary-color), 0 0 20px var(--primary-color);
+            }
+            to {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
+            }
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            background-color: #0a0a0a;
+            border-top: 1px solid #333;
+            padding: 3rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .footer-column ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--text-color);
+        }
+
+        @media (max-width: 768px) {
+            .feature-content, .specs-grid, .pricing-grid, .integration-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .integration-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .hero p {
+                font-size: 1.25rem;
+            }
+            .feature h2, .cta h2 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div>
+                <a href="#" style="font-weight: bold;">Gen Agency</a>
+                <a href="#services">Chat AI</a>
+                <a href="#voice">Voice AI</a>
+                <a href="#about">About</a>
+            </div>
+            <div>
+                <a href="#" class="btn btn-outline">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>AI Revolution</h1>
+            <p>Transform your business with AI</p>
+            <a href="#" class="btn btn-primary">Learn more</a>
+            <a href="#" class="btn btn-outline">Get Started</a>
+        </div>
+    </section>
+
+    <section id="services" class="feature">
+        <div class="container">
+            <div class="feature-content">
+                <div>
+                    <h2>Chat AI</h2>
+                    <p>Experience conversation like never before with our advanced Chat AI technology. Natural, contextual, and always learning.</p>
+                    <a href="#" class="btn btn-outline">Learn more</a>
+                </div>
+                <div class="feature-image"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="voice" class="feature">
+        <div class="container">
+            <div class="feature-content">
+                <div class="feature-image"></div>
+                <div>
+                    <h2>Voice AI</h2>
+                    <p>Crystal clear voice interactions powered by cutting-edge neural networks. Your voice is the only interface you need.</p>
+                    <a href="#" class="btn btn-outline">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="specs">
+        <div class="container">
+            <h2>Technical Specifications</h2>
+            <div class="specs-grid">
+                <div class="specs-item">
+                    <h3>Chat AI</h3>
+                    <ul>
+                        <li>Multi-language support with 95% accuracy</li>
+                        <li>Context-aware responses</li>
+                        <li>Real-time learning and adaptation</li>
+                    </ul>
+                </div>
+                <div class="specs-item">
+                    <h3>Voice AI</h3>
+                    <ul>
+                        <li>Natural language processing</li>
+                        <li>Emotion detection</li>
+                        <li>Background noise reduction</li>
+                    </ul>
+                </div>
+                <div class="specs-item">
+                    <h3>Integration</h3>
+                    <ul>
+                        <li>API-first architecture</li>
+                        <li>Enterprise-grade security</li>
+                        <li>99.9% uptime SLA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <div class="container">
+            <h2>Choose Your Plan</h2>
+            <div class="pricing-grid">
+                <div class="pricing-item">
+                    <h3>Starter</h3>
+                    <div class="price">$99<span style="font-size: 1rem; color: #a0a0a0;">/mo</span></div>
+                    <ul>
+                        <li>Basic Chat AI</li>
+                        <li>5,000 messages/month</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+                <div class="pricing-item featured">
+                    <h3>Professional</h3>
+                    <div class="price">$199<span style="font-size: 1rem; color: #e0e0e0;">/mo</span></div>
+                    <ul>
+                        <li>Advanced Chat &amp; Voice AI</li>
+                        <li>50,000 messages/month</li>
+                        <li>24/7 priority support</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="background-color: #fff; color: #3b82f6;">Get Started</a>
+                </div>
+                <div class="pricing-item">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom</div>
+                    <ul>
+                        <li>Custom AI Solutions</li>
+                        <li>Unlimited messages</li>
+                        <li>Dedicated support team</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="integration">
+        <div class="container">
+            <h2>Seamless Integration</h2>
+            <p>Works with your favorite tools and platforms</p>
+            <div class="integration-grid">
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+                <div class="integration-item"><div class="integration-item-inner"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container cta-content">
             <h2>Ready to Transform Your Business?</h2>
             <p>Join thousands of companies already using our AI solutions to drive growth and innovation.</p>
             <a href="#" class="btn btn-primary">Get Started</a>
