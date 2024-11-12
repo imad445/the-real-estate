@@ -3,796 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gen Agency - AI Revolution</title>
+    <title>Genagency AI - Empowering Businesses with AI Agents & Automation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.21/vanta.net.min.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
-        :root {
-            --primary-color: #3b82f6;
-            --secondary-color: #8b5cf6;
-            --accent-color: #10b981;
-            --background-color: #000;
-            --text-color: #fff;
-            --text-secondary: #a0a0a0;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+        
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #00ffff, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+        
+        .glow {
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.3);
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        nav {
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            transition: background-color 0.3s ease;
-        }
-
-        nav:hover {
-            background-color: rgba(0, 0, 0, 0.9);
-        }
-
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            margin-right: 1rem;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: var(--primary-color);
-        }
-
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: linear-gradient(45deg, #000, #1a1a1a);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
-            z-index: 1;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s;
-            animation-fill-mode: both;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
+        
+        .btn-gradient {
+            background: linear-gradient(45deg, #00ffff, #00ccff);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                120deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: all 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .btn-primary:hover {
-            background-color: #2563eb;
-        }
-
-        .btn-outline {
-            border: 2px solid var(--primary-color);
-            color: var(--text-color);
-        }
-
-        .btn-outline:hover {
-            background-color: var(--primary-color);
-        }
-
-        .feature {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 4rem 0;
-            position: relative;
-        }
-
-        .feature::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 30%),
-                radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
-            z-index: 1;
-        }
-
-        .feature-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .feature h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .feature p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-        }
-
-        .feature-image {
-            aspect-ratio: 1;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .feature-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            opacity: 0.8;
-        }
-
-        .feature-image::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 80%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.2;
-        }
-
-        .specs {
-            background-color: #0a0a0a;
-            padding: 4rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .specs::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 80%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .specs h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .specs-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .specs-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .specs-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .specs-item ul {
-            list-style-type: none;
-        }
-
-        .specs-item li {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .specs-item li::before {
-            content: '✓';
-            color: var(--accent-color);
-            margin-right: 0.5rem;
-        }
-
-        .pricing {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #000, #0a0a0a);
-        }
-
-        .pricing h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .pricing-item {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .pricing-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .pricing-item.featured {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        
+        .btn-gradient:hover {
+            filter: brightness(1.2);
             transform: scale(1.05);
         }
 
-        .pricing-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-item .price {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-item ul {
-            list-style-type: none;
-            padding: 0;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-item li {
-            margin-bottom: 0.5rem;
-        }
-
-        .integration {
-            background-color: #0a0a0a;
-            padding: 4rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .integration::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 80%);
-            animation: rotate 30s linear infinite reverse;
-        }
-
-        .integration h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .integration p {
-            text-align: center;
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .integration-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .integration-item {
-            aspect-ratio: 1;
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .integration-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .integration-item-inner {
-            width: 4rem;
-            height: 4rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .integration-item-inner::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 80%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 0.5;
-        }
-
-        .cta {
-            min-height: 70vh;
-            background: linear-gradient(to bottom, #000, #1e3a8a);
-            display: flex;
-            align-items: center;
-            text-align: center;
-            padding: 4rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta::before {
-            content: '';
-            position: absolute;
+        #vanta-bg {
+            width: 100%;
+            height: 100vh;
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 25%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 25%);
-            z-index: 1;
+            z-index: -1;
         }
 
-        .cta-content {
-            position: relative;
-            z-index: 2;
+        .floating {
+            animation: float 6s ease-in-out infinite;
         }
 
-        .cta h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: glow 2s ease-in-out infinite alternate;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary-color), 0 0 20px var(--primary-color);
-            }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
-            }
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #00ffff;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
         }
 
-        .cta p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
         }
 
-        footer {
-            background-color: #0a0a0a;
-            border-top: 1px solid #333;
-            padding: 3rem 0;
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00ffff; }
         }
 
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+        .solution-card {
+            transition: all 0.3s ease;
         }
 
-        .footer-column h4 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .footer-column ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .footer-column li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-column a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--text-color);
-        }
-
-        @media (max-width: 768px) {
-            .feature-content, .specs-grid, .pricing-grid, .integration-grid, .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            .integration-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .hero h1 {
-                font-size: 3rem;
-            }
-            .hero p {
-                font-size: 1.25rem;
-            }
-            .feature h2, .cta h2 {
-                font-size: 2.5rem;
-            }
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.2);
         }
     </style>
 </head>
-<body>
-    <nav>
-        <div class="container">
-            <div>
-                <a href="#" style="font-weight: bold;">Gen Agency</a>
-                <a href="#services">Chat AI</a>
-                <a href="#voice" id="voice-ai-button">Voice AI</a>
-                <a href="#about">About</a>
+<body class="bg-black text-white orbitron">
+    <div id="app">
+        <header class="fixed w-full z-50 bg-black bg-opacity-50 backdrop-blur-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold gradient-text">Genagency AI</a>
+                <nav class="hidden md:flex space-x-8">
+                    <a v-for="item in navItems" :key="item.href" :href="item.href" class="text-white hover:text-cyan-400 transition-colors duration-200">
+                        {{ item.text }}
+                    </a>
+                </nav>
+                <button @click="toggleMobileMenu" class="md:hidden text-white" aria-label="Toggle menu">
+                    <svg v-if="!isMobileMenuOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
-            <div>
-                <a href="#" class="btn btn-outline">Sign In</a>
+            <nav v-if="isMobileMenuOpen" class="md:hidden bg-black bg-opacity-90 py-4">
+                <div class="container mx-auto px-4 flex flex-col space-y-4">
+                    <a v-for="item in navItems" :key="item.href" :href="item.href" @click="closeMobileMenu" class="text-white hover:text-cyan-400 transition-colors duration-200">
+                        {{ item.text }}
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+                <div id="vanta-bg"></div>
+                <div class="container mx-auto px-4 text-center z-10">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-text glow typewriter">
+                        AI Revolution
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 text-cyan-300">
+                        Empowering Businesses with Next-Gen AI Solutions
+                    </p>
+                    <div class="space-x-4 mb-12">
+                        <a href="#contact" class="inline-block btn-gradient text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-lg transition-all duration-300">
+                            Get Started
+                        </a>
+                        <a href="#solutions" class="inline-block bg-transparent border-2 border-cyan-400 text-cyan-400 px-8 py-3 rounded-full text-lg font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300">
+                            Explore Solutions
+                        </a>
+                    </div>
+                    <div class="flex justify-center space-x-8">
+                        <div v-for="(stat, index) in stats" :key="index" class="text-center floating" :style="{ animationDelay: `${index * 0.2}s` }">
+                            <div class="text-4xl font-bold gradient-text mb-2">{{ stat.value }}</div>
+                            <div class="text-sm text-cyan-300">{{ stat.label }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+                    <svg class="animate-bounce w-6 h-6 text-cyan-400" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+            </section>
+
+            <section id="solutions" class="py-20 bg-gray-900">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">Solutions: AI That Works for You</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div v-for="solution in solutions" :key="solution.title" class="bg-black p-6 rounded-lg solution-card" data-aos="fade-up" :data-aos-delay="solution.delay">
+                            <h3 class="text-2xl font-semibold mb-4 gradient-text">{{ solution.title }}</h3>
+                            <p class="text-gray-300 mb-4">{{ solution.description }}</p>
+                            <a href="#" class="text-cyan-400 hover:underline">Learn more →</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="py-20 bg-black">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">About Genagency AI</h2>
+                    <div class="flex flex-col md:flex-row items-center justify-between">
+                        <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right">
+                            <h3 class="text-2xl font-semibold mb-4">Our Mission</h3>
+                            <p class="text-gray-300">At Genagency AI, we're on a mission to revolutionize businesses through cutting-edge AI solutions. We believe in the power of artificial intelligence to transform operations, enhance customer experiences, and drive innovation across industries.</p>
+                        </div>
+                        <div class="md:w-1/2" data-aos="fade-left">
+                            <img src="/placeholder.svg?height=300&width=400" alt="Genagency AI Team" class="rounded-lg shadow-lg">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="py-20 bg-gray-900">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">Key Features</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div v-for="feature in features" :key="feature.title" class="text-center" data-aos="fade-up" :data-aos-delay="feature.delay">
+                            <div class="text-4xl mb-4 gradient-text">{{ feature.icon }}</div>
+                            <h3 class="text-xl font-semibold mb-2">{{ feature.title }}</h3>
+                            <p class="text-gray-300">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="integrations" class="py-20 bg-gray-900">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">Integrations: Seamlessly Connect Your Favorite Tools</h2>
+                    <p class="text-xl text-center mb-12 text-gray-300" data-aos="fade-up" data-aos-delay="200">
+                        Streamline your processes and maximize productivity with our wide range of integrations.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div v-for="(category, index) in integrations" :key="index" class="bg-black p-6 rounded-lg shadow-lg" :data-aos="'fade-up'" :data-aos-delay="index * 200">
+                            <h3 class="text-2xl font-semibold mb-4 gradient-text">{{ category.category }}</h3>
+                            <ul class="space-y-2">
+                                <li v-for="(platform, platformIndex) in category.platforms" :key="platformIndex" class="flex items-center">
+                                    <img :src="getLogoPlaceholder(platform)" :alt="`${platform} logo`" class="w-8 h-8 mr-2 rounded-full">
+                                    {{ platform }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="technology" class="py-20 bg-black">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">Our Technology: The AI Behind the Magic</h2>
+                    <p class="text-xl text-center mb-12 text-gray-300" data-aos="fade-up" data-aos-delay="200">
+                        Discover the advanced AI technologies powering our chat and voice agents.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div v-for="(feature, index) in techFeatures" :key="index" class="bg-gray-900 p-6 rounded-lg shadow-lg" :data-aos="'fade-up'" :data-aos-delay="index * 200">
+                            <div class="flex items-center mb-4">
+                                <span class="text-4xl mr-4">{{ feature.icon }}</span>
+                                <h3 class="text-2xl font-semibold gradient-text">{{ feature.title }}</h3>
+                            </div>
+                            <p class="text-gray-300">{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="py-20 bg-black">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl font-bold mb-12 text-center gradient-text" data-aos="fade-up">Get in Touch</h2>
+                    <form @submit.prevent="submitForm" class="max-w-lg mx-auto" data-aos="fade-up">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" v-model="form.name" required class="w-full px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" v-model="form.email" required class="w-full px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-300 mb-2">Message</label>
+                            <textarea id="message" v-model="form.message" required class="w-full px-4 py-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="w-full btn-gradient text-white px-6 py-3 rounded-full text-lg font-semibold hover:shadow-lg transition-all duration-300">Send Message</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-gray-900 py-8">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-wrap justify-between items-center">
+                    <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                        <a href="#" class="text-2xl font-bold gradient-text">Genagency AI</a>
+                        <p class="mt-2 text-gray-400">Empowering businesses with next-gen AI solutions</p>
+                    </div>
+                    <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                        <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li v-for="item in navItems" :key="item.href">
+                                <a :href="item.href" class="text-gray-400 hover:text-cyan-400 transition-colors duration-200">{{ item.text }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="w-full md:w-1/3">
+                        <h4 class="text-lg font-semibold mb-4">Connect With Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-200">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-200">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" /></svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-cyan-400 transition-colors duration-200">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 text-center text-gray-400">
+                    <p>&copy; 2023 Genagency AI. All rights reserved.</p>
+                </div>
             </div>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="container hero-content">
-            <h1>AI Revolution</h1>
-            <p>Transform your business with AI</p>
-            <a href="#" class="btn btn-primary">Learn more</a>
-            <a href="#" class="btn btn-outline">Get Started</a>
-        </div>
-    </section>
-
-    <section id="services" class="feature">
-        <div class="container">
-            <div class="feature-content">
-                <div>
-                    <h2>Chat AI</h2>
-                    <p>Experience conversation like never before with our advanced Chat AI technology. Natural, contextual, and always learning.</p>
-                    <a href="#" class="btn btn-outline">Learn more</a>
-                </div>
-                <div class="feature-image"></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="voice" class="feature">
-        <div class="container">
-            <div class="feature-content">
-                <div class="feature-image"></div>
-                <div>
-                    <h2>Voice AI</h2>
-                    <p>Crystal clear voice interactions powered by cutting-edge neural networks. Your voice is the only interface you need.</p>
-                    <a href="#" class="btn btn-outline">Learn more</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="specs">
-        <div class="container">
-            <h2>Technical Specifications</h2>
-            <div class="specs-grid">
-                <div class="specs-item">
-                    <h3>Chat AI</h3>
-                    <ul>
-                        <li>Multi-language support with 95% accuracy</li>
-                        <li>Context-aware responses</li>
-                        <li>Real-time learning and adaptation</li>
-                    </ul>
-                </div>
-                <div class="specs-item">
-                    <h3>Voice AI</h3>
-                    <ul>
-                        <li>Natural language processing</li>
-                        <li>Emotion detection</li>
-                        <li>Background noise reduction</li>
-                    </ul>
-                </div>
-                <div class="specs-item">
-                    <h3>Integration</h3>
-                    <ul>
-                        <li>API-first architecture</li>
-                        <li>Enterprise-grade security</li>
-                        <li>99.9% uptime SLA</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing">
-        <div class="container">
-            <h2>Choose Your Plan</h2>
-            <div class="pricing-grid">
-                <div class="pricing-item">
-                    <h3>Starter</h3>
-                    <div class="price">$99<span style="font-size: 1rem; color: #a0a0a0;">/mo</span></div>
-                    <ul>
-                        <li>Basic Chat AI</li>
-                        <li>5,000 messages/month</li>
-                        <li>Email support</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Get Started</a>
-                </div>
-                <div class="pricing-item featured">
-                    <h3>Professional</h3>
-                    <div class="price">$199<span style="font-size: 1rem; color: #e0e0e0;">/mo</span></div>
-                    <ul>
-                        <li>Advanced Chat &amp; Voice AI</li>
-                        <li>50,000 messages/month</li>
-                        <li>24/7 priority support</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary" style="background-color: #fff; color: #3b82f6;">Get Started</a>
-                </div>
-                <div class="pricing-item">
-                    <h3>Enterprise</h3>
-                    <div class="price">Custom</div>
-                    <ul>
-                        <li>Custom AI Solutions</li>
-                        <li>Unlimited messages</li>
-                        <li>Dedicated support team</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Contact Sales</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="integration">
-        <div class="container">
-            <h2>Seamless Integration</h2>
-            <p>Works with your favorite tools and platforms</p>
-            <div class="integration-grid">
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-                <div class="integration-item"><div class="integration-item-inner"></div></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta">
-        <div class="container cta-content">
-            <h2>Ready to Transform Your Business?</h2>
-            <p>Join thousands of companies already using our AI solutions to drive growth and innovation.</p>
-            <a href="#" class="btn btn-primary">Get Started</a>
-            <a href="#" class="btn btn-outline">Contact Sales</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h4>Gen Agency</h4>
-                    <p style="color: #a0a0a0;">Transforming businesses through AI innovation</p>
-                </div>
-                <div class="footer-column">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="#">Chat AI</a></li>
-                        <li><a href="#">Voice AI</a></li>
-                        <li><a href="#">Custom Solutions</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Cookies</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Voiceflow Chat Widget Script -->
-    <script type="text/javascript">
-        (function(d, t) {
-            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-            v.onload = function() {
-                window.voiceflow.chat.load({
-                    verify: { projectID: '6732bce5fc60c717ab08c039' },
-                    url: 'https://general-runtime.voiceflow.com',
-                    versionID: 'production'
-                });
-            }
-            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-        })(document, 'script');
-    </script>
+        </footer>
+    </div>
 
     <script>
-        // Wait for the Voiceflow chat widget to load and then add event listeners
-        window.addEventListener('load', function() {
-            // Check if Voiceflow chat is ready
-            if (window.voiceflow && window.voiceflow.chat) {
-                document.getElementById('voice-ai-button').addEventListener('click', function(e) {
-                    e.preventDefault(); // Prevent the default anchor behavior
-                    // Open the Voiceflow chat
-                    window.voiceflow.chat.open();
-                    // Trigger the 'ai_voice' event
-                    window.voiceflow.chat.interact({
-                        type: 'event',
-                        payload: {
-                            event: {
-                                name: 'ai_voice'
-                            }
-                        }
-                    });
-                });
-            } else {
-                console.error('Voiceflow chat is not available.');
+        const { createApp, ref, onMounted } = Vue
+
+        createApp({
+            setup() {
+                const isMobileMenuOpen = ref(false)
+
+                const navItems = [
+                    { href: '#hero', text: 'Home' },
+                    { href: '#solutions', text: 'Solutions' },
+                    { href: '#about', text: 'About' },
+                    { href: '#features', text: 'Features' },
+                    { href: '#integrations', text: 'Integrations' },
+                    { href: '#technology', text: 'Technology' },
+                    { href: '#contact', text: 'Contact' }
+                ]
+
+                const stats = [
+                    { value: '99%', label: 'Customer Satisfaction' },
+                    { value: '24/7', label: 'AI Support' },
+                    { value: '500+', label: 'Businesses Empowered' }
+                ]
+
+                const solutions = [
+                    { title: 'AI Chat Agents', description: 'Feature-rich, scalable chatbots for customer engagement and support.', delay: '0' },
+                    { title: 'Voice Agents', description: 'Real-time, conversational voice solutions with multilingual support.', delay: '200' },
+                    { title: 'Automations', description: 'Custom automations to streamline business workflows.', delay: '400' }
+                ]
+
+                const features = [
+                    { icon: '🚀', title: 'Scalability', description: 'Grow your AI solutions as your business expands.', delay: '0' },
+                    { icon: '🔒', title: 'Security', description: 'Enterprise-grade security for your data and operations.', delay: '200' },
+                    { icon: '🌐', title: 'Integration', description: 'Seamless integration with your existing systems.', delay: '400' },
+                    { icon: '📊', title: 'Analytics', description: 'Powerful insights to optimize your AI performance.', delay: '600' }
+                ]
+
+                const form = ref({
+                    name: '',
+                    email: '',
+                    message: ''
+                })
+
+                const integrations = [
+                    {
+                        category: 'Productivity & Data Management',
+                        platforms: ['Google Sheets', 'Microsoft Excel', 'Airtable', 'Trello']
+                    },
+                    {
+                        category: 'CRM Systems',
+                        platforms: ['Salesforce', 'HubSpot', 'Zoho', 'Monday.com']
+                    },
+                    {
+                        category: 'Messaging & Communication',
+                        platforms: ['WhatsApp', 'Facebook Messenger', 'Slack', 'SMS platforms']
+                    }
+                ]
+
+                const techFeatures = [
+                    {
+                        title: 'AI & Machine Learning',
+                        description: 'Leveraging advanced NLP models for chat agents and state-of-the-art voice recognition technology.',
+                        icon: '🧠'
+                    },
+                    {
+                        title: 'Security & Privacy',
+                        description: 'End-to-end encryption and GDPR compliance ensure your data remains protected.',
+                        icon: '🔒'
+                    },
+                    {
+                        title: 'Scalability & Flexibility',
+                        description: 'Our technology grows with your business, supporting companies of all sizes.',
+                        icon: '📈'
+                    },
+                    {
+                        title: 'Continuous Improvement',
+                        description: 'Ongoing R&D and strategic partnerships keep our AI at the cutting edge.',
+                        icon: '🚀'
+                    }
+                ]
+
+                const getLogoPlaceholder = (platform) => {
+                    const words = platform.split(' ');
+                    return `/placeholder.svg?text=${words[0][0]}${words[1] ? words[1][0] : ''}`;
+                };
+
+                const toggleMobileMenu = () => {
+                    isMobileMenuOpen.value = !isMobileMenuOpen.value
+                }
+
+                const closeMobileMenu = () => {
+                    isMobileMenuOpen.value = false
+                }
+
+                const submitForm = () => {
+                    // Handle form submission
+                    console.log('Form submitted:', form.value)
+                    // Reset form
+                    form.value = { name: '', email: '', message: '' }
+                    // Show success message (you can implement this)
+                    alert('Thank you for your message. We will get back to you soon!')
+                }
+
+                onMounted(() => {
+                    VANTA.NET({
+                        el: "#vanta-bg",
+                        mouseControls: true,
+                        touchControls: true,
+                        gyroControls: false,
+                        minHeight: 200.00,
+                        minWidth: 200.00,
+                        scale: 1.00,
+                        scaleMobile: 1.00,
+                        color: 0x00ffff,
+                        backgroundColor: 0x0,
+                        points: 10.00,
+                        maxDistance: 20.00,
+                        spacing: 16.00
+                    })
+
+                    AOS.init({
+                        duration: 1000,
+                        once: true,
+                        offset: 100
+                    })
+                })
+
+                return {
+                    isMobileMenuOpen,
+                    navItems,
+                    stats,
+                    solutions,
+                    features,
+                    form,
+                    integrations,
+                    techFeatures,
+                    getLogoPlaceholder,
+                    toggleMobileMenu,
+                    closeMobileMenu,
+                    submitForm
+                }
             }
-        });
+        }).mount('#app')
     </script>
 </body>
 </html>
