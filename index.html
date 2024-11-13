@@ -10,11 +10,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.21/vanta.net.min.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
-        
-        .orbitron {
-            font-family: 'Orbitron', sans-serif;
+        body {
+            font-family: 'Inter', sans-serif;
         }
         
         .gradient-text {
@@ -87,7 +86,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white orbitron">
+<body class="bg-gray-900 text-white">
     <div id="app">
         <header class="fixed w-full z-50 bg-gray-900 bg-opacity-50 backdrop-blur-md">
             <div class="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -200,13 +199,11 @@
                             <ul class="space-y-4">
                                 <li v-for="(platform, platformIndex) in category.platforms" :key="platformIndex" class="flex items-center">
                                     <div class="w-10 h-10 mr-4 relative">
-                                        <img :src="`/placeholder.svg?height=40&width=40&text=${platform.split(' ')[0][0]}${platform.split(' ')[1] ? platform.split(' ')[1][0] : ''}`"
-                                             :alt="`${platform} logo`"
-                                             class="rounded-md"
-                                             width="40"
-                                             height="40">
+                                        <img :src="platform.logo"
+                                             :alt="`${platform.name} logo`"
+                                             class="rounded-md w-10 h-10 object-contain">
                                     </div>
-                                    <span class="text-gray-300">{{ platform }}</span>
+                                    <span class="text-gray-300">{{ platform.name }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -336,15 +333,30 @@
                 const integrations = [
                     {
                         category: 'Productivity & Data Management',
-                        platforms: ['Google Sheets', 'Microsoft Excel', 'Airtable', 'Trello']
+                        platforms: [
+                            { name: 'Google Sheets', logo: 'https://www.gstatic.com/images/branding/product/2x/sheets_2020q4_48dp.png' },
+                            { name: 'Microsoft Excel', logo: '/placeholder.svg?height=40&width=40&text=Excel' },
+                            { name: 'Airtable', logo: 'https://www.airtable.com/images/favicon/baymax/apple-touch-icon.png' },
+                            { name: 'Trello', logo: 'https://trello.com/favicon.ico' }
+                        ]
                     },
                     {
                         category: 'CRM Systems',
-                        platforms: ['Salesforce', 'HubSpot', 'Zoho', 'Monday.com']
+                        platforms: [
+                            { name: 'Salesforce', logo: 'https://c1.sfdcstatic.com/content/dam/sfdc-docs/www/logos/logo-salesforce.svg' },
+                            { name: 'HubSpot', logo: 'https://www.hubspot.com/hubfs/HubSpot_Logos/HubSpot-Inversed-Favicon.png' },
+                            { name: 'Zoho', logo: 'https://www.zoho.com/branding/images/zoho-logo-512px.png' },
+                            { name: 'Monday.com', logo: '/placeholder.svg?height=40&width=40&text=Monday' }
+                        ]
                     },
                     {
                         category: 'Messaging & Communication',
-                        platforms: ['WhatsApp', 'Facebook Messenger', 'Slack', 'SMS platforms']
+                        platforms: [
+                            { name: 'WhatsApp', logo: 'https://static.whatsapp.net/rsrc.php/v3/yP/r/rYZqPCBaG70.png' },
+                            { name: 'Facebook Messenger', logo: '/placeholder.svg?height=40&width=40&text=FB' },
+                            { name: 'Slack', logo: 'https://a.slack-edge.com/80588/marketing/img/meta/slack_hash_256.png' },
+                            { name: 'SMS platforms', logo: '/placeholder.svg?height=40&width=40&text=SMS' }
+                        ]
                     }
                 ]
 
@@ -393,40 +405,4 @@
                         el: "#vanta-bg",
                         mouseControls: true,
                         touchControls: true,
-                        gyroControls: false,
-                        minHeight: 200.00,
-                        minWidth: 200.00,
-                        scale: 1.00,
-                        scaleMobile: 1.00,
-                        color: 0x3b82f6,
-                        backgroundColor: 0x111827,
-                        points: 10.00,
-                        maxDistance: 20.00,
-                        spacing: 16.00
-                    })
-
-                    AOS.init({
-                        duration: 1000,
-                        once: true,
-                        offset: 100
-                    })
-                })
-
-                return {
-                    isMobileMenuOpen,
-                    navItems,
-                    stats,
-                    solutions,
-                    features,
-                    form,
-                    integrations,
-                    techFeatures,
-                    toggleMobileMenu,
-                    closeMobileMenu,
-                    submitForm
-                }
-            }
-        }).mount('#app')
-    </script>
-</body>
-</html>
+                        gyroControls
